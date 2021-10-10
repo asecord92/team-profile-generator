@@ -1,10 +1,10 @@
 const inquirer = require('inquirer');
-const { choices } = require('yargs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
-const team = [];
+
+const teamArray = [];
 
 function managerPrompt() {
     inquirer
@@ -31,7 +31,7 @@ function managerPrompt() {
     )
     .then(({ name, id, email, officeNumber }) => {
         const manager = new Manager(name, id, email, officeNumber)
-        team.push(manager);
+        teamArray.push(manager);
         roleSelect();
     });
     
@@ -52,6 +52,8 @@ function roleSelect() {
         }else if (teamMember.role === 'Intern') {
             internPrompt();
         }
+        
+        createPage();
     }) 
 }
 
@@ -78,8 +80,8 @@ function engineerPrompt() {
             message: 'Please enter their github username'
         }])
     .then(({ name, id, email, github }) =>{
-        const engineer = new Intern(name, id, email, github)
-        team.push(engineer);
+        const engineer = new Engineer(name, id, email, github)
+        teamArray.push(engineer);
         roleSelect();
 
     })
@@ -108,10 +110,14 @@ function internPrompt() {
         }])
     .then(({ name, id, email, school }) =>{
         const intern = new Intern(name, id, email, school)
-        team.push(intern);
+        teamArray.push(intern);
         roleSelect();
 
     })
+}
+
+function createPage() {
+    console.log('Well now what');
 }
 managerPrompt();
 
