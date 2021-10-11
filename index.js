@@ -1,13 +1,14 @@
 const inquirer = require('inquirer');
+const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-
+const generateTeam = require('./src/pagetemplate')
 
 const teamArray = [];
 
 function managerPrompt() {
-    inquirer
+    return inquirer
     .prompt([{
         type:'text',
         name: 'name',
@@ -38,31 +39,14 @@ function managerPrompt() {
 
 };
 
-function roleSelect() {
-    inquirer
-    .prompt([{
-        type: 'list',
-        name: 'role',
-        message: 'What employee would you like to add?',
-        choices: ['Engineer', 'Intern', 'Finish']
-    }])
-    .then(teamMember => {
-        if (teamMember.role === 'Engineer') {
-            engineerPrompt();
-        }else if (teamMember.role === 'Intern') {
-            internPrompt();
-        }
-        
-        createPage();
-    }) 
-}
+
 
 function engineerPrompt() {
-    inquirer.prompt([
+    return inquirer.prompt([
         {
             type:'text',
             name: 'name',
-            message:"Intern Name"
+            message:"Engineer Name"
         },
         {
             type:'text',
@@ -88,7 +72,7 @@ function engineerPrompt() {
 }
 
 function internPrompt() {
-    inquirer.prompt([
+    return inquirer.prompt([
         {
             type:'text',
             name: 'name',
@@ -116,9 +100,40 @@ function internPrompt() {
     })
 }
 
-function createPage() {
-    console.log('Well now what');
+function roleSelect() {
+    return inquirer
+    .prompt([{
+        type: 'list',
+        name: 'role',
+        message: 'What employee would you like to add?',
+        choices: ['Engineer', 'Intern', 'Finish']
+    }])
+    .then(teamMember => {
+        if (teamMember.role === 'Engineer') {
+            engineerPrompt();
+        }else if (teamMember.role === 'Intern') {
+            internPrompt();
+        }else if (teamMember.role === 'Finish') {
+             createPage(teamArray);
+        }
+        
+        
+    }) 
 }
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName, data, err => {
+        if (err) throw new Error(err);
+    
+        console.log("Team Page Successfully Created!")
+    })
+}; 
+function createPage(teamArray) {
+     const pageLayout = generateTeam(teamArray)
+     writeToFile('./dist/index.html', pageLayout)
+     
+    
+}
+
 managerPrompt();
 
 
