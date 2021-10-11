@@ -35,13 +35,13 @@ function generateTeam(teamArray) {
                  </div>`;
                 })
                 .join('')}
+                ${teamArray
+                    .filter(({ github }) => github)
+                    .map(({ name, id, getRole, email, github }) => {
+                      return `
                 <div class = "col-sm ">
                     <div class="card mt-4 shadow mb-5 bg-body rounded">
                         <div class="card-body p-0 bg-secondary bg-opacity-10 ">
-                        ${teamArray
-                            .filter(({ github }) => github)
-                            .map(({ name, id, getRole, email, github }) => {
-                              return `
                             <div class="container-fluid ps-3 bg-primary">
                             <h5 class="card-title pt-2 text-white">${name}</h5>
                             <h6 class="card-subtitle pb-2 text-white">${getRole()}</h6>
@@ -56,14 +56,13 @@ function generateTeam(teamArray) {
                 </div>`;
                 })
                 .join('')}
+                ${teamArray
+                    .filter(({ school }) => school)
+                    .map(({ name, id, getRole, email, school }) => {
+                      return `
                 <div class = "col-sm ">
                     <div class="card mt-4 shadow mb-5 bg-body rounded">
                         <div class="card-body p-0 bg-secondary bg-opacity-10 ">
-
-                        ${teamArray
-                            .filter(({ school }) => school)
-                            .map(({ name, id, getRole, email, school }) => {
-                              return `
                             <div class="container-fluid ps-3 bg-primary">
                             <h5 class="card-title pt-2 text-white">${name}</h5>
                             <h6 class="card-subtitle pb-2 text-white">${getRole()}</h6>
